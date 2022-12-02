@@ -7,7 +7,7 @@ public static class InputDataReader
     private readonly static string inputDataFolderPath =
         Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).FullName, "InputData");
 
-    internal async static Task<IEnumerable<T?>> GetInputDataAsync<T>(string fileName, string delimiter = "\n", bool trimEmptyLastLine = true)
+    internal async static Task<IEnumerable<T>> GetInputDataAsync<T>(string fileName, string delimiter = "\n", bool trimEmptyLastLine = true)
     {
         string filePath = Path.Combine(inputDataFolderPath, fileName);
 
@@ -22,9 +22,9 @@ public static class InputDataReader
         return lines.Select(Convert<T>);
     }
 
-    private static T? Convert<T>(string value)
+    private static T Convert<T>(string? value)
     {
         var tc = TypeDescriptor.GetConverter(typeof(T));
-        return (T?)tc.ConvertFromInvariantString(value.Trim());
+        return (T?)tc.ConvertFromInvariantString(value?.Trim());
     }
 }
