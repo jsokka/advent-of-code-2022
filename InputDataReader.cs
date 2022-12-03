@@ -25,6 +25,6 @@ public static class InputDataReader
     private static T Convert<T>(string? value)
     {
         var tc = TypeDescriptor.GetConverter(typeof(T));
-        return (T?)tc.ConvertFromInvariantString(value?.Trim());
+        return (T)tc.ConvertFromInvariantString(value?.Trim() ?? "")!;
     }
 }
