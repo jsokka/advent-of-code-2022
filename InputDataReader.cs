@@ -9,6 +9,13 @@ public static class InputDataReader
 
     internal async static Task<IEnumerable<T>> GetInputDataAsync<T>(string fileName, string delimiter = "\n", bool trimEmptyLastLine = true)
     {
+        var lines = await GetRawInputDataAsync(fileName, delimiter, trimEmptyLastLine);
+
+        return lines.Select(Convert<T>);
+    }
+
+    internal async static Task<IEnumerable<string>> GetRawInputDataAsync(string fileName, string delimiter = "\n", bool trimEmptyLastLine = true)
+    {
         string filePath = Path.Combine(inputDataFolderPath, fileName);
 
         var lines = (await File.ReadAllTextAsync(filePath))
@@ -19,7 +26,7 @@ public static class InputDataReader
             lines.RemoveAt(lines.Count - 1);
         }
 
-        return lines.Select(Convert<T>);
+        return lines;
     }
 
     private static T Convert<T>(string? value)
